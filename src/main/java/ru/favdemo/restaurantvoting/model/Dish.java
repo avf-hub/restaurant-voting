@@ -1,24 +1,21 @@
 package ru.favdemo.restaurantvoting.model;
 
-import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Dish extends AbstractNamedEntity {
+import java.time.LocalDateTime;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString(callSuper = true)
+public class Dish extends AbstractBaseEntity {
+
+    private LocalDateTime dateTime;
 
     private int price;
 
     private String description;
 
-    private Menu menu;
-
-    @Override
-    public String toString() {
-        return "Dish[" +
-                "id=" + id +
-                ", name=" + name + '\'' +
-                ", price='" + price +
-                ", description='" + description +
-                ']';
-    }
+    private Restaurant restaurant;
 }

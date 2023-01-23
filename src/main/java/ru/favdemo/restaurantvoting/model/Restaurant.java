@@ -1,12 +1,20 @@
 package ru.favdemo.restaurantvoting.model;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+import java.util.List;
+import java.util.Set;
+
+@Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
+@ToString(callSuper = true)
 public class Restaurant extends AbstractNamedEntity {
+
+    private List<Dish> dishes;
+
+    private Set<Vote> votes;
 
     @Override
     public String toString() {
