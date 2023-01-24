@@ -3,7 +3,6 @@ package ru.favdemo.restaurantvoting.model;
 import lombok.*;
 
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -12,9 +11,9 @@ import java.util.Set;
 @ToString(callSuper = true)
 public class Restaurant extends AbstractNamedEntity {
 
-    private List<Dish> dishes;
+    private List<Menu> menus;
 
-    private Set<Vote> votes;
+    private List<Vote> votes;;
 
     @Override
     public String toString() {
