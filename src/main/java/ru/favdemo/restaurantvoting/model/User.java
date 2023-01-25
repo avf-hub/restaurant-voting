@@ -51,6 +51,11 @@ public class User extends AbstractNamedEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Role> roles;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OrderBy("voteDate DESC")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Set<Vote> votes;
+
     @Override
     public String toString() {
         return "User:" + id + '[' + email + ']';

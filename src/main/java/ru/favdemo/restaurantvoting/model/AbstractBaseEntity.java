@@ -1,17 +1,17 @@
 package ru.favdemo.restaurantvoting.model;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.Hibernate;
+import org.springframework.data.domain.Persistable;
+import org.springframework.data.util.ProxyUtils;
 
+@MappedSuperclass
+@Access(AccessType.FIELD)
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class AbstractBaseEntity {
+public abstract class AbstractBaseEntity implements Persistable<Integer> {
 
     public static final int START_SEQ = 100000;
 
@@ -21,11 +21,16 @@ public abstract class AbstractBaseEntity {
     protected Integer id;
 
     @Override
+    public boolean isNew() {
+        return id == null;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (o == null || !getClass().equals(Hibernate.getClass(o))) {
+        if (o == null || !getClass().equals(ProxyUtils.getUserClass(o))) {
             return false;
         }
         AbstractBaseEntity that = (AbstractBaseEntity) o;
