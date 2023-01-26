@@ -9,8 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "restaurant",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"name"}, name = "restaurant_unique_name_idx")},
-        indexes = {@Index(columnList = "name", name = "restaurant_name_idx")})
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"name"}, name = "restaurant_unique_name_idx")})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,9 +17,8 @@ import java.util.List;
 public class Restaurant extends AbstractNamedEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    @OrderBy("menuDate DESC")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Menu> menus;
+    @OrderBy("dishDate DESC")
+    private List<Dish> menu;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OrderBy("voteDate DESC")
