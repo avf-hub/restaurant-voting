@@ -52,7 +52,7 @@ public class User extends AbstractNamedEntity {
     private Set<Role> roles;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    @OrderBy("voteDate DESC")
+    @OrderBy("dateTime DESC")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Vote> votes;
 

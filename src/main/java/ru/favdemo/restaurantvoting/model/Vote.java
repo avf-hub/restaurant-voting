@@ -7,19 +7,20 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "vote",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "vote_date"}, name = "vote_unique_user_votedate_idx")})
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date_time"}, name = "vote_unique_user_datetime_idx")})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Vote extends AbstractBaseEntity {
 
-    @Column(name = "vote_date", nullable = false)
+    @Column(name = "date_time", nullable = false)
     @NotNull
-    private LocalDate voteDate;
+    private LocalDateTime dateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -33,6 +34,6 @@ public class Vote extends AbstractBaseEntity {
 
     @Override
     public String toString() {
-        return "Vote:" + id + '[' + voteDate + " - " + restaurant + ']';
+        return "Vote:" + id + '[' + dateTime + " - " + restaurant + ']';
     }
 }
