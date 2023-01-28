@@ -2,8 +2,6 @@ package ru.favdemo.restaurantvoting.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 
@@ -21,7 +19,7 @@ public class Restaurant extends AbstractNamedEntity {
     private List<Dish> menu;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    @OrderBy("voteDate DESC")
+    @OrderBy("dateTime DESC")
     private List<Vote> votes;
 
     @Override

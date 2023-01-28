@@ -27,7 +27,7 @@ public class Vote extends AbstractBaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
