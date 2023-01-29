@@ -5,9 +5,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.transaction.annotation.Transactional;
-
-import static ru.favdemo.restaurantvoting.util.validation.ValidationUtil.checkExisted;
-import static ru.favdemo.restaurantvoting.util.validation.ValidationUtil.checkModification;
+import ru.favdemo.restaurantvoting.error.IllegalRequestDataException;
+import ru.favdemo.restaurantvoting.error.NotFoundException;
 
 @NoRepositoryBean
 public interface BaseRepository<T> extends JpaRepository<T, Integer> {
@@ -18,13 +17,15 @@ public interface BaseRepository<T> extends JpaRepository<T, Integer> {
     int delete(int id);
 
     default void deleteExisted(int id) {
-        checkModification(delete(id), id);
+        if (delete(id) == 0) {
+            throw new NotFoundException("Entity with id=" + id + " not found");
+        }
     }
 
     @Query("SELECT e FROM #{#entityName} e WHERE e.id = :id")
     T get(int id);
 
     default T getExisted(int id) {
-        return checkExisted(get(id), id);
+        return findById(id).orElseThrow(() -> new IllegalRequestDataException("Entity with id=" + id + " not found"));
     }
 }

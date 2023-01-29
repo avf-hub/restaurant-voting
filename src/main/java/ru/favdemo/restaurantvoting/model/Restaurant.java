@@ -18,10 +18,6 @@ public class Restaurant extends AbstractNamedEntity {
     @OrderBy("dishDate DESC")
     private List<Dish> menu;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    @OrderBy("dateTime DESC")
-    private List<Vote> votes;
-
     @Override
     public String toString() {
         return "Restaurant:" + id + '[' + name + ']';

@@ -5,10 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
+import ru.favdemo.restaurantvoting.HasIdAndEmail;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class UserTo extends AbstractNamedTo {
+public class UserTo extends AbstractNamedTo implements HasIdAndEmail {
 
     @Email
     @NotBlank

@@ -1,27 +1,30 @@
 package ru.favdemo.restaurantvoting.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.util.CollectionUtils;
+import ru.favdemo.restaurantvoting.HasIdAndEmail;
 
-import java.util.Date;
-import java.util.Set;
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class User extends AbstractNamedEntity {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class User extends AbstractNamedEntity implements HasIdAndEmail, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Column(name = "email", nullable = false, unique = true)
     @Email
@@ -31,7 +34,8 @@ public class User extends AbstractNamedEntity {
 
     @Column(name = "password", nullable = false)
     @NotBlank
-    @Size(min = 5, max = 128)
+    @Size(max = 256)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
@@ -39,6 +43,7 @@ public class User extends AbstractNamedEntity {
 
     @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()", updatable = false)
     @NotNull
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date registered = new Date();
 
     @Enumerated(EnumType.STRING)
@@ -55,6 +60,27 @@ public class User extends AbstractNamedEntity {
     @OrderBy("dateTime DESC")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Vote> votes;
+
+    public User(User u) {
+        this(u.id, u.name, u.email, u.password, u.enabled, u.registered, u.roles);
+    }
+
+    public User(Integer id, String name, String email, String password, Role... roles) {
+        this(id, name, email, password, true, new Date(), Arrays.asList(roles));
+    }
+
+    public User(Integer id, String name, String email, String password, boolean enabled, Date registered, Collection<Role> roles) {
+        super(id, name);
+        this.email = email;
+        this.password = password;
+        this.enabled = enabled;
+        this.registered = registered;
+        setRoles(roles);
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
+    }
 
     @Override
     public String toString() {

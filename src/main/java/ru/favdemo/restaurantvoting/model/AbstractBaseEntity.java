@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.util.ProxyUtils;
+import org.springframework.util.Assert;
+import ru.favdemo.restaurantvoting.HasId;
 
 @MappedSuperclass
 @Access(AccessType.FIELD)
@@ -11,7 +13,7 @@ import org.springframework.data.util.ProxyUtils;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class AbstractBaseEntity implements Persistable<Integer> {
+public abstract class AbstractBaseEntity implements Persistable<Integer>, HasId {
 
     public static final int START_SEQ = 100000;
 
@@ -19,6 +21,12 @@ public abstract class AbstractBaseEntity implements Persistable<Integer> {
     @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = START_SEQ)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
     protected Integer id;
+
+    // doesn't work for hibernate lazy proxy
+    public int id() {
+        Assert.notNull(id, "Entity must have id");
+        return id;
+    }
 
     @Override
     public boolean isNew() {

@@ -1,10 +1,10 @@
 ALTER SEQUENCE global_seq RESTART WITH 100000;
 
 INSERT INTO USERS (ID, NAME, EMAIL, PASSWORD)
-VALUES (NEXT VALUE FOR global_seq, 'Admin', 'admin@gmail.com', 'admin'),
-       (NEXT VALUE FOR global_seq, 'User', 'user@gmail.com', 'password'),
-       (NEXT VALUE FOR global_seq, 'User-vote1', 'user1@gmail.com', 'password1'),
-       (NEXT VALUE FOR global_seq, 'User-vote2', 'user2@gmail.com', 'password2');
+VALUES (NEXT VALUE FOR global_seq, 'Admin', 'admin@gmail.com', '{noop}admin'),
+       (NEXT VALUE FOR global_seq, 'User', 'user@gmail.com', '{noop}password'),
+       (NEXT VALUE FOR global_seq, 'User-vote1', 'user1@gmail.com', '{noop}password1'),
+       (NEXT VALUE FOR global_seq, 'User-vote2', 'user2@gmail.com', '{noop}password2');
 
 INSERT INTO USER_ROLES (ROLE, USER_ID)
 VALUES ('USER', 100001),
