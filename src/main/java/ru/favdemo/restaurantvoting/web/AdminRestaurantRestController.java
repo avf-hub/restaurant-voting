@@ -3,6 +3,7 @@ package ru.favdemo.restaurantvoting.web;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class AdminRestaurantRestController {
 
     private final RestaurantRepository repository;
 
-    @GetMapping(REST_URL + "/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Restaurant> get(@PathVariable int id) {
         log.info("get restaurant {}", id);
         return ResponseEntity.of(repository.findById(id));
@@ -46,7 +47,7 @@ public class AdminRestaurantRestController {
     @GetMapping
     public List<RestaurantTo> getAll() {
         log.info("getAll restaurants");
-        return RestaurantUtil.getTos(repository.findAll());
+        return RestaurantUtil.getTos(repository.findAll(Sort.by(Sort.Direction.ASC, "name")));
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)

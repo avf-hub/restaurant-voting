@@ -34,7 +34,7 @@ public class AdminDishRestController {
     private final DishRepository repository;
     private final DishService service;
 
-    @GetMapping(REST_URL + "/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Dish> get(@PathVariable int restaurantId, @PathVariable int id) {
         log.info("get Dish {} for restaurant {}", id, restaurantId);
         return ResponseEntity.of(repository.get(id, restaurantId));
@@ -51,7 +51,7 @@ public class AdminDishRestController {
     @GetMapping
     public List<DishTo> getAll(@PathVariable int restaurantId) {
         log.info("get all dishes by restaurant id {}", restaurantId);
-        return DishUtil.getTos(repository.findAll());
+        return DishUtil.getTos(repository.getAll(restaurantId));
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)

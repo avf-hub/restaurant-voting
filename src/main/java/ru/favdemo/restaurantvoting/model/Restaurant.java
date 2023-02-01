@@ -2,6 +2,8 @@ package ru.favdemo.restaurantvoting.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 
@@ -16,6 +18,7 @@ public class Restaurant extends AbstractNamedEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OrderBy("dishDate DESC")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Dish> menu;
 
     @Override

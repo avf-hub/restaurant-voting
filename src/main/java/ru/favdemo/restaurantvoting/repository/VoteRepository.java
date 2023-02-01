@@ -14,13 +14,14 @@ public interface VoteRepository extends BaseRepository<Vote> {
     Optional<Vote> get(int id, int userId);
 
     @Query("SELECT v FROM Vote v WHERE v.user.id=:userId")
-    List<Vote> getAllByUser(int userId);
+    List<Vote> getAll(int userId);
 
     @Query("SELECT v FROM Vote v WHERE v.dateTime=:dateTime AND v.user.id=:userId")
     Optional<Vote> getOnDate(int userId, LocalDateTime dateTime);
 
-    default Vote getExistedOrBelonged(int userId, LocalDateTime dateTime) {
-        return getOnDate(userId, dateTime).orElseThrow(
-                () -> new DataConflictException("For User id=" + userId + " vote is not exist or doesn't belong on voteDate=" + dateTime));
+    default Vote getExistedOrBelonged(int id, int userId) {
+        return get(id, userId).orElseThrow(
+                ()-> new DataConflictException("For User id=" + userId + " vote with id=" + id + " not found")
+        );
     }
 }

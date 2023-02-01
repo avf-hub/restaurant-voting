@@ -1,8 +1,9 @@
 package ru.favdemo.restaurantvoting.to;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
-import org.hibernate.validator.constraints.Range;
+import jakarta.validation.constraints.Size;
+import lombok.EqualsAndHashCode;
+import lombok.Value;
 
 import java.time.LocalDate;
 
@@ -14,7 +15,7 @@ public class DishTo extends AbstractNamedTo {
     LocalDate dishDate;
 
     @NotNull
-    @Range(min = 10, max = 2000)
+    @Size(min = 10, max = 2000)
     Double price;
 
     public DishTo(Integer id, String name, LocalDate dishDate, Double price) {

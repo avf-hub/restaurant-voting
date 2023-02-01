@@ -6,11 +6,9 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
-import  ru.favdemo.restaurantvoting.HasIdAndEmail;
+import ru.favdemo.restaurantvoting.HasIdAndEmail;
 import ru.favdemo.restaurantvoting.repository.UserRepository;
 import ru.favdemo.restaurantvoting.util.SecurityUtil;
-
-
 
 @Component
 @AllArgsConstructor

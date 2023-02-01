@@ -2,10 +2,10 @@ package ru.favdemo.restaurantvoting.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDate;
 
@@ -24,7 +24,7 @@ public class Dish extends AbstractNamedEntity {
 
     @Column(name = "price", nullable = false)
     @NotNull
-    @Range(min = 10, max = 2000)
+    @Size(min = 10, max = 2000)
     private Double price;
 
     @ManyToOne(fetch = FetchType.LAZY)
