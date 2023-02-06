@@ -15,7 +15,6 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Dish extends AbstractNamedEntity {
 
     @Column(name = "dish_date")
@@ -31,6 +30,12 @@ public class Dish extends AbstractNamedEntity {
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
+
+    public Dish(Integer id, String name, LocalDate dishDate, Double price) {
+        super(id, name);
+        this.dishDate = dishDate;
+        this.price = price;
+    }
 
     @Override
     public String toString() {

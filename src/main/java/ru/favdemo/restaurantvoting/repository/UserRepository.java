@@ -14,6 +14,6 @@ public interface UserRepository extends BaseRepository<User> {
     Optional<User> findByEmailIgnoreCase(String email);
 
     @EntityGraph(attributePaths = {"votes"}, type = EntityGraph.EntityGraphType.FETCH)
-    @Query("SELECT u FROM User u WHERE u.id=?1")
+    @Query("SELECT u FROM User u WHERE u.id = ?1")
     Optional<User> getWithVotes(int id);
 }

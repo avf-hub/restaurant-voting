@@ -1,6 +1,8 @@
 package ru.favdemo.restaurantvoting.util.validation;
 
 import lombok.experimental.UtilityClass;
+import org.springframework.core.NestedExceptionUtils;
+import org.springframework.lang.NonNull;
 import ru.favdemo.restaurantvoting.HasId;
 import ru.favdemo.restaurantvoting.error.IllegalRequestDataException;
 
@@ -20,5 +22,12 @@ public class ValidationUtil {
         } else if (bean.id() != id) {
             throw new IllegalRequestDataException(bean.getClass().getSimpleName() + " must has id=" + id);
         }
+    }
+
+    //  https://stackoverflow.com/a/65442410/548473
+    @NonNull
+    public static Throwable getRootCause(@NonNull Throwable t) {
+        Throwable rootCause = NestedExceptionUtils.getRootCause(t);
+        return rootCause != null ? rootCause : t;
     }
 }

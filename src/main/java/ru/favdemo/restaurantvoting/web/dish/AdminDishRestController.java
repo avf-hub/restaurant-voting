@@ -1,4 +1,4 @@
-package ru.favdemo.restaurantvoting.web;
+package ru.favdemo.restaurantvoting.web.dish;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -20,6 +20,8 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 
+import static ru.favdemo.restaurantvoting.util.DateTimeUtil.atStartOfDayOrMin;
+import static ru.favdemo.restaurantvoting.util.DateTimeUtil.atStartOfNextDayOrMax;
 import static ru.favdemo.restaurantvoting.util.validation.ValidationUtil.assureIdConsistent;
 import static ru.favdemo.restaurantvoting.util.validation.ValidationUtil.checkNew;
 
@@ -79,7 +81,7 @@ public class AdminDishRestController {
                                    @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                    @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         log.info("getBetween dates({} - {}) by restaurant id {}", startDate, endDate, restaurantId);
-        List<Dish> dishesDateFiltered = repository.getBetweenHalfOpen(startDate, endDate, restaurantId);
-        return DishUtil.getTos(dishesDateFiltered);
+        List<Dish> dishesDateFiltered = repository.getBetweenHalfOpen(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate), restaurantId);
+        return DishUtil.getFilteredTos(dishesDateFiltered, startDate, endDate);
     }
 }

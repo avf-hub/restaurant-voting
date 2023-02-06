@@ -30,11 +30,6 @@ public class AdminUserController extends AbstractUserController {
         return super.get(id);
     }
 
-    @GetMapping("/{id}/with-votes")
-    public ResponseEntity<User> getWithVotes(@PathVariable int id) {
-        return super.getWithVotes(id);
-    }
-
     @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -80,5 +75,10 @@ public class AdminUserController extends AbstractUserController {
         log.info(enabled ? "enable {}" : "disable {}", id);
         User user = repository.getExisted(id);
         user.setEnabled(enabled);
+    }
+
+    @GetMapping("/{id}/with-votes")
+    public ResponseEntity<User> getWithVotes(@PathVariable int id) {
+        return super.getWithVotes(id);
     }
 }

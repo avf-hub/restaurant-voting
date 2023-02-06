@@ -13,13 +13,16 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Restaurant extends AbstractNamedEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OrderBy("dishDate DESC")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Dish> menu;
+
+    public Restaurant(Integer id, String name) {
+        super(id, name);
+    }
 
     @Override
     public String toString() {

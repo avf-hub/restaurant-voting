@@ -1,4 +1,4 @@
-package ru.favdemo.restaurantvoting.web;
+package ru.favdemo.restaurantvoting.web.restaurant;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

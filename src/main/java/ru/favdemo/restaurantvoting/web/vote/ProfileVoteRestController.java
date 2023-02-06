@@ -1,4 +1,4 @@
-package ru.favdemo.restaurantvoting.web;
+package ru.favdemo.restaurantvoting.web.vote;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -14,6 +14,7 @@ import ru.favdemo.restaurantvoting.repository.VoteRepository;
 import ru.favdemo.restaurantvoting.service.VoteService;
 import ru.favdemo.restaurantvoting.to.VoteTo;
 import ru.favdemo.restaurantvoting.util.VoteUtil;
+import ru.favdemo.restaurantvoting.web.AuthUser;
 
 import java.net.URI;
 import java.time.LocalDateTime;
