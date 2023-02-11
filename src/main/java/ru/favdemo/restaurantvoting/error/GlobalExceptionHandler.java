@@ -29,7 +29,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final Map<Class<?>, HttpStatus> HTTP_STATUS_MAP = Map.of(
             EntityNotFoundException.class, HttpStatus.UNPROCESSABLE_ENTITY,
-            DataIntegrityViolationException.class, HttpStatus.UNPROCESSABLE_ENTITY,
+            UpdateVoteException.class, HttpStatus.UNPROCESSABLE_ENTITY,
             IllegalRequestDataException.class, HttpStatus.UNPROCESSABLE_ENTITY,
             NotFoundException.class, HttpStatus.NOT_FOUND,
             DataConflictException.class, HttpStatus.CONFLICT

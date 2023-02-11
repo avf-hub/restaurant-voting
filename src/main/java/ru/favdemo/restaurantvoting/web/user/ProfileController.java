@@ -1,5 +1,6 @@
 package ru.favdemo.restaurantvoting.web.user;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ import static ru.favdemo.restaurantvoting.util.validation.ValidationUtil.checkNe
 @RestController
 @RequestMapping(value = ProfileController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
+@Tag(name = "User Controller")
 public class ProfileController extends AbstractUserController {
     static final String REST_URL = "/api/profile";
 

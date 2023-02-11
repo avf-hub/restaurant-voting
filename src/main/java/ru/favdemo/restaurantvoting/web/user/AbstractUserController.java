@@ -34,7 +34,7 @@ public abstract class AbstractUserController {
     }
 
     public ResponseEntity<User> getWithVotes(int id) {
-        log.info("get with Votes {}", id);
+        log.info("get User id {} with Votes", id);
         return ResponseEntity.of(repository.getWithVotes(id));
     }
 

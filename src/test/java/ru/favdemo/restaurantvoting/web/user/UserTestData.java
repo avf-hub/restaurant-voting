@@ -18,13 +18,14 @@ public class UserTestData {
             MatcherFactory.usingAssertions(User.class,
                     //     No need use ignoringAllOverriddenEquals, see https://assertj.github.io/doc/#breaking-changes
                     (a, e) -> assertThat(a).usingRecursiveComparison()
-                            .ignoringFields("registered", "votes.user", "password").isEqualTo(e),
+                            .ignoringFields("registered", "votes.user", "votes.restaurant", "password").isEqualTo(e),
                     (a, e) -> {
                         throw new UnsupportedOperationException();
                     });
 
     public static final int ADMIN_ID = 100000;
     public static final int USER_ID = 100001;
+    public static final int USER_VOTE2 = 100003;
     public static final int NOT_FOUND = 100;
     public static final String USER_MAIL = "user@gmail.com";
     public static final String USER_VOTE1_MAIL = "user1@gmail.com";
@@ -40,6 +41,8 @@ public class UserTestData {
         user.setVotes(List.of(VOTE_2));
         user_vote1.setVotes(List.of(VOTE_3));
         user_vote2.setVotes(List.of(VOTE_1));
+        user_vote2.setVotes(List.of(VOTE_4));
+        user_vote2.setVotes(List.of(VOTE_5));
     }
 
     public static User getNew() {

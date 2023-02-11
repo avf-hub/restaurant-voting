@@ -1,5 +1,6 @@
 package ru.favdemo.restaurantvoting.web.user;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -20,6 +21,7 @@ import static ru.favdemo.restaurantvoting.util.validation.ValidationUtil.checkNe
 @RestController
 @RequestMapping(value = AdminUserController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
+@Tag(name = "Admin Controller")
 public class AdminUserController extends AbstractUserController {
 
     static final String REST_URL = "/api/admin/users";

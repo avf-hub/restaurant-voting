@@ -2,10 +2,13 @@ package ru.favdemo.restaurantvoting.web.user;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.favdemo.restaurantvoting.model.User;
 import ru.favdemo.restaurantvoting.repository.UserRepository;
 import ru.favdemo.restaurantvoting.to.UserTo;
@@ -14,7 +17,6 @@ import ru.favdemo.restaurantvoting.util.UsersUtil;
 import ru.favdemo.restaurantvoting.web.AbstractControllerTest;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,13 +49,13 @@ class ProfileControllerTest extends AbstractControllerTest {
     void delete() throws Exception {
         perform(MockMvcRequestBuilders.delete(REST_URL))
                 .andExpect(status().isNoContent());
-        USER_MATCHER.assertMatch(userRepository.findAll(), admin);
+        USER_MATCHER.assertMatch(userRepository.findAll(), admin, user_vote1, user_vote2);
     }
 
     @Test
     @WithUserDetails(value = USER_MAIL)
     void update() throws Exception {
-        UserTo updatedTo = new UserTo(null, "newName", USER_MAIL, "newPassword", 1500);
+        UserTo updatedTo = new UserTo(null, "newName", USER_MAIL, "newPassword");
         perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updatedTo)))
                 .andDo(print())
@@ -65,7 +67,7 @@ class ProfileControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     void updateInvalid() throws Exception {
-        UserTo updatedTo = new UserTo(null, null, "password", null, 1);
+        UserTo updatedTo = new UserTo(null, null, "password", null);
         perform(MockMvcRequestBuilders.put(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updatedTo)))
@@ -76,7 +78,7 @@ class ProfileControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     void updateDuplicate() throws Exception {
-        UserTo updatedTo = new UserTo(null, "newName", ADMIN_MAIL, "newPassword", 1500);
+        UserTo updatedTo = new UserTo(null, "newName", ADMIN_MAIL, "newPassword");
         perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updatedTo)))
                 .andDo(print())
@@ -96,7 +98,7 @@ class ProfileControllerTest extends AbstractControllerTest {
 
     @Test
     void register() throws Exception {
-        UserTo newTo = new UserTo(null, "newName", "newemail@ya.ru", "newPassword", 1500);
+        UserTo newTo = new UserTo(null, "newName", "newemail@ya.ru", "newPassword");
         User newUser = UsersUtil.createNewFromTo(newTo);
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -113,7 +115,7 @@ class ProfileControllerTest extends AbstractControllerTest {
 
     @Test
     void registerInvalid() throws Exception {
-        UserTo newTo = new UserTo(null, null, null, null, 1);
+        UserTo newTo = new UserTo(null, null, null, null);
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newTo)))

@@ -11,6 +11,8 @@ import ru.favdemo.restaurantvoting.model.User;
 import ru.favdemo.restaurantvoting.repository.UserRepository;
 import ru.favdemo.restaurantvoting.web.AbstractControllerTest;
 
+import java.util.List;
+
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -207,7 +209,7 @@ class AdminUserControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = USER_MAIL)
+    @WithUserDetails(value = ADMIN_MAIL)
     void getWithVotes() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL_SLASH + USER_ID + "/with-votes"))
                 .andExpect(status().isOk())

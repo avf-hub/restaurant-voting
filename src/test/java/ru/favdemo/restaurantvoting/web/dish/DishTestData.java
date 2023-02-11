@@ -28,7 +28,7 @@ public class DishTestData {
     public static final Dish dish_11 = new Dish(DISH_ID + 10, "Рис", LocalDate.now(), 15.);
     public static final Dish dish_12 = new Dish(DISH_ID + 11, "Рис", LocalDate.now(), 10.);
 
-    public static final List<Dish> menu_1 = List.of(dish_1, dish_4, dish_10, dish_9);
+    public static final List<Dish> menu_1 = List.of(dish_1, dish_4, dish_9, dish_10);
     public static final List<Dish> menu_2 = List.of(dish_3, dish_6, dish_7, dish_12);
     public static final List<Dish> menu_3 = List.of(dish_2, dish_5, dish_8, dish_11);
 

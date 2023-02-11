@@ -1,5 +1,6 @@
 package ru.favdemo.restaurantvoting.web.dish;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,7 @@ import static ru.favdemo.restaurantvoting.util.validation.ValidationUtil.checkNe
 @RequestMapping(value = AdminDishRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @AllArgsConstructor
+@Tag(name = "Dish Controller")
 public class AdminDishRestController {
 
     static final String REST_URL = "/api/admin/restaurants/{restaurantId}/dishes";
@@ -71,7 +73,7 @@ public class AdminDishRestController {
         checkNew(dish);
         Dish created = service.save(dish, restaurantId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{id}")
+                .path(REST_URL.replace("{restaurantId}", String.valueOf(restaurantId)) + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }

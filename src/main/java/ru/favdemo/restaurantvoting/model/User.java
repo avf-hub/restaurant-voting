@@ -1,6 +1,7 @@
 package ru.favdemo.restaurantvoting.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -14,6 +15,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.util.CollectionUtils;
 import ru.favdemo.restaurantvoting.HasIdAndEmail;
+import ru.favdemo.restaurantvoting.util.validation.NoHtml;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -33,6 +35,7 @@ public class User extends AbstractNamedEntity implements HasIdAndEmail, Serializ
     @Email
     @NotBlank
     @Size(max = 128)
+    @NoHtml
     private String email;
 
     @Column(name = "password", nullable = false)
@@ -60,8 +63,9 @@ public class User extends AbstractNamedEntity implements HasIdAndEmail, Serializ
     private Set<Role> roles;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    @OrderBy("dateTime DESC")
+    @OrderBy("voteDate DESC")
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @Schema(hidden = true)
     private List<Vote> votes;
 
     public User(User u) {

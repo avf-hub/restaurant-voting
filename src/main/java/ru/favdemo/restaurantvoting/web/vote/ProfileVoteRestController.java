@@ -1,5 +1,6 @@
 package ru.favdemo.restaurantvoting.web.vote;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,13 +13,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.favdemo.restaurantvoting.model.Vote;
 import ru.favdemo.restaurantvoting.repository.VoteRepository;
 import ru.favdemo.restaurantvoting.service.VoteService;
-import ru.favdemo.restaurantvoting.to.VoteTo;
-import ru.favdemo.restaurantvoting.util.VoteUtil;
 import ru.favdemo.restaurantvoting.web.AuthUser;
 
 import java.net.URI;
-import java.time.LocalDateTime;
-import java.util.List;
+import java.time.LocalDate;
 
 import static ru.favdemo.restaurantvoting.util.validation.ValidationUtil.assureIdConsistent;
 import static ru.favdemo.restaurantvoting.util.validation.ValidationUtil.checkNew;
@@ -27,6 +25,7 @@ import static ru.favdemo.restaurantvoting.util.validation.ValidationUtil.checkNe
 @RequestMapping(value = ProfileVoteRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 @Slf4j
+@Tag(name = "User voting Controller")
 public class ProfileVoteRestController {
 
     static final String REST_URL = "/api/profile/voting";
@@ -51,34 +50,27 @@ public class ProfileVoteRestController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody Vote vote, @AuthenticationPrincipal AuthUser authUser,
-                       @PathVariable int id, @PathVariable int restaurantId) {
-        log.info("update Vote {} for user id {} by restaurant id {}", vote, authUser.id(), restaurantId);
+                       @PathVariable int id) {
+        log.info("update Vote {} for user id {}", vote, authUser.id());
         assureIdConsistent(vote, id);
         repository.getExistedOrBelonged(id, authUser.id());
-        service.update(vote, authUser.id(), restaurantId);
+        service.update(vote, authUser.id());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Vote> createWithLocation(@Valid @RequestBody Vote vote, @AuthenticationPrincipal AuthUser authUser,
-                                                   @PathVariable int restaurantId) {
-        log.info("create Vote {} for user id {} by restaurant id {}", vote, authUser.id(), restaurantId);
+    public ResponseEntity<Vote> createWithLocation(@Valid @RequestBody Vote vote, @AuthenticationPrincipal AuthUser authUser) {
+        log.info("create Vote {} for user id {}", vote, authUser.id());
         checkNew(vote);
-        Vote created = service.save(vote, authUser.id(), restaurantId);
+        Vote created = service.save(vote, authUser.id());
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @GetMapping
-    public List<VoteTo> getAll(@AuthenticationPrincipal AuthUser authUser) {
-        log.info("getAll restaurants");
-        return VoteUtil.getTos(repository.getAll(authUser.id()));
-    }
-
     @GetMapping("/vote-today")
     public ResponseEntity<Vote> getOnDate(@AuthenticationPrincipal AuthUser authUser) {
         log.info("get vote for user id {} to day", authUser.id());
-        return ResponseEntity.of(repository.getOnDate(authUser.id(), LocalDateTime.now()));
+        return ResponseEntity.of(repository.getOnDate(authUser.id(), LocalDate.now()));
     }
 }
