@@ -40,9 +40,7 @@ public class UserTestData {
     static {
         user.setVotes(List.of(VOTE_2));
         user_vote1.setVotes(List.of(VOTE_3));
-        user_vote2.setVotes(List.of(VOTE_1));
-        user_vote2.setVotes(List.of(VOTE_4));
-        user_vote2.setVotes(List.of(VOTE_5));
+        user_vote2.setVotes(List.of(VOTE_1, VOTE_4, VOTE_5));
     }
 
     public static User getNew() {

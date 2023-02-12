@@ -2,13 +2,10 @@ package ru.favdemo.restaurantvoting.web.user;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.favdemo.restaurantvoting.model.User;
 import ru.favdemo.restaurantvoting.repository.UserRepository;
 import ru.favdemo.restaurantvoting.to.UserTo;

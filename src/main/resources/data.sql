@@ -9,7 +9,9 @@ VALUES (NEXT VALUE FOR global_seq, 'Admin', 'admin@gmail.com', '{noop}admin'),
 INSERT INTO USER_ROLES (ROLE, USER_ID)
 VALUES ('USER', 100001),
        ('ADMIN', 100000),
-       ('USER', 100000);
+       ('USER', 100000),
+       ('USER', 100002),
+       ('USER', 100003);
 
 INSERT INTO RESTAURANT (ID, NAME)
 VALUES (NEXT VALUE FOR global_seq, 'Restaurant-1'),
