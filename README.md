@@ -1,8 +1,8 @@
 Restaurant voting system REST API
-===============================
+==========================================================
+__________________________________________________________
 
-### Technical requirement:
-
+## Technical requirement:
 Design and implement a REST API using Hibernate/Spring/SpringMVC (Spring-Boot preferred!) **without frontend**.
 
 The task is:
