@@ -1,5 +1,4 @@
-Restaurant voting system REST API
-==========================================================
+# Restaurant voting system REST API
 __________________________________________________________
 
 ## Technical requirement:
