@@ -35,10 +35,10 @@ import org.springframework.context.annotation.Configuration;
                         </p><br>
                         <p>
                         <b>Test credentials:</b> <br>
-                        - admin@gmail.com / admin <br>
-                        - user@gmail.com / password <br>
-                        - user1@gmail.com / password1 <br>
-                        - user2@gmail.com / password2
+                        - Admin: admin@gmail.com / admin <br>
+                        - User: user@gmail.com / password <br>
+                        - User-vote1: user1@gmail.com / password1 <br>
+                        - User-vote2: user2@gmail.com / password2
                         </p>
                         """,
                 contact = @Contact(url = "https://github.com/avf-hub/restaurant-voting", name = "Falkovskiy Andrey", email = "avf-91@yandex.ru")
