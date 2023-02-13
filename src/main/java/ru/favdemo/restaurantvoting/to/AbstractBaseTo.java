@@ -5,11 +5,12 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.favdemo.restaurantvoting.HasId;
 
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Data
-public abstract class AbstractBaseTo {
+public abstract class AbstractBaseTo implements HasId {
 
     @Schema(hidden = true)
     protected Integer id;
