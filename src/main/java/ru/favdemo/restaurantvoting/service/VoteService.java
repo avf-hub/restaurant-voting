@@ -3,7 +3,6 @@ package ru.favdemo.restaurantvoting.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.favdemo.restaurantvoting.error.DataConflictException;
 import ru.favdemo.restaurantvoting.error.UpdateVoteException;
 import ru.favdemo.restaurantvoting.model.Vote;
 import ru.favdemo.restaurantvoting.repository.UserRepository;
@@ -22,16 +21,17 @@ public class VoteService {
 
     @Transactional
     public Vote save(Vote vote, int userId) {
-        vote.setUser(userRepository.getExisted(userId));
+        vote.setUser(userRepository.getReferenceById(userId));
         return voteRepository.save(vote);
     }
 
     @Transactional
     public void update(Vote vote, int userId) {
+        voteRepository.getExistedOrBelonged(vote.id(), userId);
         if (LocalTime.now().isAfter(UPDATE_DEADLINE)) {
             throw new UpdateVoteException("You can`t change your vote after 11:00");
         }
-        vote.setUser(userRepository.getExisted(userId));
+        vote.setUser(userRepository.getReferenceById(userId));
         voteRepository.save(vote);
     }
 }

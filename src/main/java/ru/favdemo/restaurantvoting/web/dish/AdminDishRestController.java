@@ -4,11 +4,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.favdemo.restaurantvoting.model.Dish;
@@ -18,11 +16,8 @@ import ru.favdemo.restaurantvoting.to.DishTo;
 import ru.favdemo.restaurantvoting.util.DishUtil;
 
 import java.net.URI;
-import java.time.LocalDate;
 import java.util.List;
 
-import static ru.favdemo.restaurantvoting.util.DateTimeUtil.atStartOfDayOrMin;
-import static ru.favdemo.restaurantvoting.util.DateTimeUtil.atStartOfNextDayOrMax;
 import static ru.favdemo.restaurantvoting.util.validation.ValidationUtil.assureIdConsistent;
 import static ru.favdemo.restaurantvoting.util.validation.ValidationUtil.checkNew;
 
@@ -48,8 +43,7 @@ public class AdminDishRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int restaurantId, @PathVariable int id) {
         log.info("delete Dish {} for restaurant {}", id, restaurantId);
-        Dish dish = repository.getExistedOrBelonged(id, restaurantId);
-        repository.delete(dish);
+        repository.deleteExisted(id);
     }
 
     @GetMapping
@@ -63,8 +57,7 @@ public class AdminDishRestController {
     public void update(@Valid @RequestBody Dish dish, @PathVariable int restaurantId, @PathVariable int id) {
         log.info("update Dish {} by restaurant id {}", dish, restaurantId);
         assureIdConsistent(dish, id);
-        repository.getExistedOrBelonged(id, restaurantId);
-        service.save(dish, restaurantId);
+        service.update(dish, restaurantId);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -79,11 +72,8 @@ public class AdminDishRestController {
     }
 
     @GetMapping("/filter")
-    public List<DishTo> getBetween(@PathVariable int restaurantId,
-                                   @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-                                   @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        log.info("getBetween dates({} - {}) by restaurant id {}", startDate, endDate, restaurantId);
-        List<Dish> dishesDateFiltered = repository.getBetweenHalfOpen(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate), restaurantId);
-        return DishUtil.getFilteredTos(dishesDateFiltered, startDate, endDate);
+    public List<DishTo> getAllToDay(@PathVariable int restaurantId) {
+        log.info("get all dishes by restaurant id {} to day", restaurantId);
+        return DishUtil.getTos(repository.getAllToDay(restaurantId));
     }
 }

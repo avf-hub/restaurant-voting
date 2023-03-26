@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.favdemo.restaurantvoting.error.DataConflictException;
 import ru.favdemo.restaurantvoting.model.Vote;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 @Transactional(readOnly = true)
@@ -15,9 +14,9 @@ public interface VoteRepository extends BaseRepository<Vote> {
     @Query("SELECT v FROM Vote v WHERE v.id=:id AND v.user.id=:userId")
     Optional<Vote> get(int id, int userId);
 
-    @EntityGraph(attributePaths = {"restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
-    @Query("SELECT v FROM Vote v WHERE v.voteDate=:voteDate AND v.user.id=:userId")
-    Optional<Vote> getOnDate(int userId, LocalDate voteDate);
+    @EntityGraph(attributePaths = {"restaurant", "restaurant.dishes"}, type = EntityGraph.EntityGraphType.FETCH)
+    @Query("SELECT v FROM Vote v WHERE v.voteDate=current_date() AND v.user.id=:userId")
+    Optional<Vote> getToDay(int userId);
 
     default Vote getExistedOrBelonged(int id, int userId) {
         return get(id, userId).orElseThrow(

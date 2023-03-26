@@ -78,9 +78,4 @@ public class AdminUserController extends AbstractUserController {
         User user = repository.getExisted(id);
         user.setEnabled(enabled);
     }
-
-    @GetMapping("/{id}/with-votes")
-    public ResponseEntity<User> getWithVotes(@PathVariable int id) {
-        return super.getWithVotes(id);
-    }
 }

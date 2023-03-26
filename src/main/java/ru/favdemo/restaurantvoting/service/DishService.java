@@ -11,12 +11,19 @@ import ru.favdemo.restaurantvoting.repository.RestaurantRepository;
 @AllArgsConstructor
 public class DishService {
 
-    private DishRepository dishRepository;
-    private RestaurantRepository restaurantRepository;
+    private final DishRepository dishRepository;
+    private final RestaurantRepository restaurantRepository;
 
     @Transactional
     public Dish save(Dish dish, int restaurantId) {
-        dish.setRestaurant(restaurantRepository.getExisted(restaurantId));
+        dish.setRestaurant(restaurantRepository.getReferenceById(restaurantId));
         return dishRepository.save(dish);
+    }
+
+    @Transactional
+    public void update(Dish dish, int restaurantId) {
+        dishRepository.getExistedOrBelonged(dish.id(), restaurantId);
+        dish.setRestaurant(restaurantRepository.getReferenceById(restaurantId));
+        dishRepository.save(dish);
     }
 }

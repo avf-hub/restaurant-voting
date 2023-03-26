@@ -11,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.util.CollectionUtils;
@@ -21,6 +22,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Entity
 @Table(name = "users")
 @Getter
@@ -62,6 +64,7 @@ public class User extends AbstractNamedEntity implements HasIdAndEmail, Serializ
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Role> roles;
 
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @OrderBy("voteDate DESC")
     @OnDelete(action = OnDeleteAction.CASCADE)

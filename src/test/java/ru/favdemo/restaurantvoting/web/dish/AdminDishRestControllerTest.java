@@ -10,15 +10,14 @@ import ru.favdemo.restaurantvoting.model.Dish;
 import ru.favdemo.restaurantvoting.repository.DishRepository;
 import ru.favdemo.restaurantvoting.util.JsonUtil;
 import ru.favdemo.restaurantvoting.web.AbstractControllerTest;
-import ru.favdemo.restaurantvoting.web.user.UserTestData;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.favdemo.restaurantvoting.util.DishUtil.createTo;
 import static ru.favdemo.restaurantvoting.util.DishUtil.getTos;
 import static ru.favdemo.restaurantvoting.web.dish.AdminDishRestController.REST_URL;
 import static ru.favdemo.restaurantvoting.web.dish.DishTestData.*;
@@ -62,14 +61,14 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     void delete() throws Exception {
         perform(MockMvcRequestBuilders.delete(REST_URL_SLASH + DISH_ID))
                 .andExpect(status().isNoContent());
-        assertFalse(dishRepository.get(DISH_ID, UserTestData.USER_ID).isPresent());
+        assertFalse(dishRepository.get(DISH_ID, RESTAURANT_ID).isPresent());
     }
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
-    void deleteDataConflict() throws Exception {
+    void deleteNotFound() throws Exception {
         perform(MockMvcRequestBuilders.delete(REST_URL_SLASH + NOT_FOUND))
-                .andExpect(status().isConflict());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -106,32 +105,13 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(DISH_TO_MATCHER.contentJson(getTos(menu_1)));
-    }
-
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    void getBetween() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + "filter")
-                .param("startDate", LocalDate.now().plusDays(-1).toString())
-                .param("endDate", LocalDate.now().plusDays(1).toString()))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(DISH_TO_MATCHER.contentJson(createTo(dish_1), createTo(dish_4), createTo(dish_9), createTo(dish_10)));
-    }
-
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    void getBetweenAll() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + "filter?startDate=&endTime="))
-                .andExpect(status().isOk())
-                .andExpect(DISH_TO_MATCHER.contentJson(getTos(menu_1)));
+                .andExpect(DISH_TO_MATCHER.contentJson(getTos(dishes_1)));
     }
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void createInvalid() throws Exception {
-        Dish invalid = new Dish(null, "Dummy", null, 100.);
+        Dish invalid = new Dish(null, "Dummy", null, new BigDecimal(100));
         perform(MockMvcRequestBuilders.post(REST_URL_REPLACE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid)))
@@ -142,7 +122,7 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void updateInvalid() throws Exception {
-        Dish invalid = new Dish(DISH_ID, null, null, 6000.);
+        Dish invalid = new Dish(DISH_ID, null, null, new BigDecimal(6000));
         perform(MockMvcRequestBuilders.put(REST_URL_SLASH + DISH_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid)))
@@ -153,11 +133,21 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void updateHtmlUnsafe() throws Exception {
-        Dish invalid = new Dish(DISH_ID, "<script>alert(123)</script>", LocalDate.now(), 200.);
+        Dish invalid = new Dish(DISH_ID, "<script>alert(123)</script>", LocalDate.now(), new BigDecimal(200));
         perform(MockMvcRequestBuilders.put(REST_URL_SLASH + DISH_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_MAIL)
+    void getAllToDay() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + "/filter"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(DISH_TO_MATCHER.contentJson(getTos(dishesToDay)));
     }
 }

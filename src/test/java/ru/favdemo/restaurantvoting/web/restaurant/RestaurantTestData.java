@@ -18,9 +18,9 @@ public class RestaurantTestData {
     public static final Restaurant RESTAURANT_3 = new Restaurant(RESTAURANT_ID + 2, "Restaurant-3");
 
     static {
-        RESTAURANT_1.setMenu(menu_1);
-        RESTAURANT_2.setMenu(menu_2);
-        RESTAURANT_3.setMenu(menu_3);
+        RESTAURANT_1.setDishes(dishes_1);
+        RESTAURANT_2.setDishes(dishes_2);
+        RESTAURANT_3.setDishes(dishes_3);
     }
 
     public static Restaurant getNew() {

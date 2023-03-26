@@ -32,7 +32,6 @@ public class Vote extends AbstractBaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @Schema(hidden = true)
     private Restaurant restaurant;
 
     public Vote(Integer id, LocalDate voteDate) {

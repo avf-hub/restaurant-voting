@@ -1,10 +1,11 @@
 package ru.favdemo.restaurantvoting.to;
 
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Value
@@ -15,10 +16,10 @@ public class DishTo extends AbstractNamedTo {
     LocalDate dishDate;
 
     @NotNull
-    @Size(min = 10, max = 2000)
-    Double price;
+    @DecimalMin(value = "1")
+    BigDecimal price;
 
-    public DishTo(Integer id, String name, LocalDate dishDate, Double price) {
+    public DishTo(Integer id, String name, LocalDate dishDate, BigDecimal price) {
         super(id, name);
         this.dishDate = dishDate;
         this.price = price;

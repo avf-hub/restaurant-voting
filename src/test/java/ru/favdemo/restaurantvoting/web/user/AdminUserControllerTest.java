@@ -11,8 +11,6 @@ import ru.favdemo.restaurantvoting.model.User;
 import ru.favdemo.restaurantvoting.repository.UserRepository;
 import ru.favdemo.restaurantvoting.web.AbstractControllerTest;
 
-import java.util.List;
-
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -206,15 +204,5 @@ class AdminUserControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(EXCEPTION_DUPLICATE_EMAIL)));
-    }
-
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    void getWithVotes() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + USER_ID + "/with-votes"))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(USER_WITH_VOTES_MATCHER.contentJson(user));
     }
 }

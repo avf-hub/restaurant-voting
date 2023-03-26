@@ -5,17 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.*;
 import org.springframework.lang.NonNull;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import ru.favdemo.restaurantvoting.util.validation.ValidationUtil;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -26,14 +25,6 @@ import java.util.Map;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private final MessageSource messageSource;
-
-    private static final Map<Class<?>, HttpStatus> HTTP_STATUS_MAP = Map.of(
-            EntityNotFoundException.class, HttpStatus.UNPROCESSABLE_ENTITY,
-            UpdateVoteException.class, HttpStatus.UNPROCESSABLE_ENTITY,
-            IllegalRequestDataException.class, HttpStatus.UNPROCESSABLE_ENTITY,
-            NotFoundException.class, HttpStatus.NOT_FOUND,
-            DataConflictException.class, HttpStatus.CONFLICT
-    );
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
@@ -50,18 +41,45 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, body, headers, HttpStatus.UNPROCESSABLE_ENTITY, request);
     }
 
-    //   https://howtodoinjava.com/spring-mvc/spring-problemdetail-errorresponse/#5-adding-problemdetail-to-custom-exceptions
-    @ExceptionHandler(Exception.class)
-    public ProblemDetail exception(Exception ex, WebRequest request) {
-        HttpStatus status = HTTP_STATUS_MAP.get(ex.getClass());
-        if (status != null) {
-            log.error("Exception: {}", ex.toString());
-            return createProblemDetail(ex, status, request);
-        } else {
-            Throwable root = ValidationUtil.getRootCause(ex);
-            log.error("Exception: " + root, root);
-            return createProblemDetail(ex, HttpStatus.INTERNAL_SERVER_ERROR, root.getClass().getName(), request);
-        }
+    @ExceptionHandler(AppException.class)
+    public ProblemDetail appException(AppException ex, WebRequest request) {
+        log.error("AppException: {}", ex.getMessage());
+        return createProblemDetail(ex, ex.getStatusCode(), request);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ProblemDetail entityNotFoundException(WebRequest request, EntityNotFoundException ex) {
+        log.error("EntityNotFoundException: {}", ex.getMessage());
+        return createProblemDetail(ex, HttpStatus.UNPROCESSABLE_ENTITY, request);
+    }
+
+    @ExceptionHandler(UpdateVoteException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ProblemDetail updateVote(WebRequest request, EntityNotFoundException ex) {
+        log.error("UpdateVoteException: {}", ex.getMessage());
+        return createProblemDetail(ex, HttpStatus.UNPROCESSABLE_ENTITY, request);
+    }
+
+    @ExceptionHandler(IllegalRequestDataException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ProblemDetail illegalRequestData(WebRequest request, EntityNotFoundException ex) {
+        log.error("IllegalRequestDataException: {}", ex.getMessage());
+        return createProblemDetail(ex, HttpStatus.UNPROCESSABLE_ENTITY, request);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ProblemDetail notFound(WebRequest request, EntityNotFoundException ex) {
+        log.error("NotFoundException: {}", ex.getMessage());
+        return createProblemDetail(ex, HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(DataConflictException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ProblemDetail dataConflict(WebRequest request, EntityNotFoundException ex) {
+        log.error("DataConflictException: {}", ex.getMessage());
+        return createProblemDetail(ex, HttpStatus.CONFLICT, request);
     }
 
     private ProblemDetail createProblemDetail(Exception ex, HttpStatusCode statusCode, WebRequest request) {

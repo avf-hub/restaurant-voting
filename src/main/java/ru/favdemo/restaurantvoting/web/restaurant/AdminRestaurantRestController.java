@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.favdemo.restaurantvoting.model.Restaurant;
 import ru.favdemo.restaurantvoting.repository.RestaurantRepository;
+import ru.favdemo.restaurantvoting.service.RestaurantService;
 import ru.favdemo.restaurantvoting.to.RestaurantTo;
 import ru.favdemo.restaurantvoting.util.RestaurantUtil;
 
@@ -31,6 +32,7 @@ public class AdminRestaurantRestController {
     static final String REST_URL = "/api/admin/restaurants";
 
     private final RestaurantRepository repository;
+    private final RestaurantService service;
 
     @GetMapping("/{id}")
     public ResponseEntity<Restaurant> get(@PathVariable int id) {
@@ -42,8 +44,7 @@ public class AdminRestaurantRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
         log.info("delete restaurant {}", id);
-        Restaurant restaurant = repository.getExisted(id);
-        repository.delete(restaurant);
+        repository.deleteExisted(id);
     }
 
     @GetMapping
@@ -57,8 +58,7 @@ public class AdminRestaurantRestController {
     public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int id) {
         log.info("update restaurant {} with id {}", restaurant, id);
         assureIdConsistent(restaurant, id);
-        repository.getExisted(id);
-        repository.save(restaurant);
+        service.update(restaurant, id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -72,8 +72,8 @@ public class AdminRestaurantRestController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @GetMapping("/{id}/menu")
-    public ResponseEntity<Restaurant> getWithMenu(@PathVariable int id) {
-        return ResponseEntity.of(repository.getWithMenu(id));
+    @GetMapping("/{id}/with-dishes")
+    public ResponseEntity<Restaurant> getWithDishes(@PathVariable int id) {
+        return ResponseEntity.of(repository.getWithDishes(id));
     }
 }

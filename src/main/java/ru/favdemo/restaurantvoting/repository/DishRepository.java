@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.favdemo.restaurantvoting.error.DataConflictException;
 import ru.favdemo.restaurantvoting.model.Dish;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +17,8 @@ public interface DishRepository extends BaseRepository<Dish> {
     @Query("SELECT d FROM Dish d WHERE d.restaurant.id=:restaurantId ORDER BY d.dishDate DESC")
     List<Dish> getAll(int restaurantId);
 
-    @Query("SELECT d from Dish d WHERE d.restaurant.id=:restaurantId AND d.dishDate >= :startDate AND d.dishDate <= :endDate ORDER BY d.dishDate DESC")
-    List<Dish> getBetweenHalfOpen(LocalDate startDate, LocalDate endDate, int restaurantId);
+    @Query("SELECT d FROM Dish d WHERE d.restaurant.id=:restaurantId AND d.dishDate=current_date() ORDER BY d.name")
+    List<Dish> getAllToDay(int restaurantId);
 
     default Dish getExistedOrBelonged(int id, int restaurantId) {
         return get(id, restaurantId).orElseThrow(
