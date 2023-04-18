@@ -1,4 +1,4 @@
-package ru.favdemo.restaurantvoting.web.restaurant;
+package ru.favdemo.restaurantvoting.web;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -26,7 +26,7 @@ import static ru.favdemo.restaurantvoting.util.validation.ValidationUtil.checkNe
 @RequestMapping(value = AdminRestaurantRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 @Slf4j
-@Tag(name = "Restaurant Controller")
+@Tag(name = "AdminRestaurantController")
 public class AdminRestaurantRestController {
 
     static final String REST_URL = "/api/admin/restaurants";
@@ -70,10 +70,5 @@ public class AdminRestaurantRestController {
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
-    }
-
-    @GetMapping("/{id}/with-dishes")
-    public ResponseEntity<Restaurant> getWithDishes(@PathVariable int id) {
-        return ResponseEntity.of(repository.getWithDishes(id));
     }
 }

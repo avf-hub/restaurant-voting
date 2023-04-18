@@ -1,4 +1,4 @@
-package ru.favdemo.restaurantvoting.web.vote;
+package ru.favdemo.restaurantvoting.web;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -16,7 +16,6 @@ import ru.favdemo.restaurantvoting.repository.RestaurantRepository;
 import ru.favdemo.restaurantvoting.repository.VoteRepository;
 import ru.favdemo.restaurantvoting.service.VoteService;
 import ru.favdemo.restaurantvoting.to.RestaurantTo;
-import ru.favdemo.restaurantvoting.web.AuthUser;
 
 import java.net.URI;
 import java.util.List;
@@ -29,10 +28,10 @@ import static ru.favdemo.restaurantvoting.util.validation.ValidationUtil.checkNe
 @RequestMapping(value = ProfileVoteRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 @Slf4j
-@Tag(name = "User voting Controller")
+@Tag(name = "VoteRestController")
 public class ProfileVoteRestController {
 
-    static final String REST_URL = "/api/profile/voting";
+    static final String REST_URL = "/api/voting";
 
     private final VoteRepository voteRepository;
     private final VoteService voteService;
@@ -42,15 +41,6 @@ public class ProfileVoteRestController {
     public ResponseEntity<Vote> get(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
         log.info("get Vote id {} for user id {}", id, authUser.id());
         return ResponseEntity.of(voteRepository.get(id, authUser.id()));
-    }
-
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody Vote vote, @AuthenticationPrincipal AuthUser authUser,
-                       @PathVariable int id) {
-        log.info("update Vote {} for user id {}", vote, authUser.id());
-        assureIdConsistent(vote, id);
-        voteService.update(vote, authUser.id());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

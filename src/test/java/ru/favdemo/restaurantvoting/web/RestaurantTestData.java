@@ -1,10 +1,10 @@
-package ru.favdemo.restaurantvoting.web.restaurant;
+package ru.favdemo.restaurantvoting.web;
 
 import ru.favdemo.restaurantvoting.model.Restaurant;
 import ru.favdemo.restaurantvoting.to.RestaurantTo;
 import ru.favdemo.restaurantvoting.web.MatcherFactory;
 
-import static ru.favdemo.restaurantvoting.web.dish.DishTestData.*;
+import static ru.favdemo.restaurantvoting.web.DishTestData.*;
 
 public class RestaurantTestData {
     public static final MatcherFactory.Matcher<Restaurant> RESTAURANT_MATCHER = MatcherFactory.usingEqualsComparator(Restaurant.class);

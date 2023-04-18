@@ -1,4 +1,4 @@
-package ru.favdemo.restaurantvoting.web.dish;
+package ru.favdemo.restaurantvoting.web;
 
 import ru.favdemo.restaurantvoting.model.Dish;
 import ru.favdemo.restaurantvoting.to.DishTo;

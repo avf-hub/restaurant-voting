@@ -20,8 +20,8 @@ public interface DishRepository extends BaseRepository<Dish> {
     @Query("SELECT d FROM Dish d WHERE d.restaurant.id=:restaurantId AND d.dishDate=current_date() ORDER BY d.name")
     List<Dish> getAllToDay(int restaurantId);
 
-    default Dish getExistedOrBelonged(int id, int restaurantId) {
-        return get(id, restaurantId).orElseThrow(
+    default void getExistedOrBelonged(int id, int restaurantId) {
+        get(id, restaurantId).orElseThrow(
                 () -> new DataConflictException("Dish id=" + id + " is not exist or doesn't belong to Restaurant id=" + restaurantId));
     }
 }

@@ -1,4 +1,4 @@
-package ru.favdemo.restaurantvoting.web.dish;
+package ru.favdemo.restaurantvoting.web;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.favdemo.restaurantvoting.model.Dish;
 import ru.favdemo.restaurantvoting.repository.DishRepository;
 import ru.favdemo.restaurantvoting.util.JsonUtil;
-import ru.favdemo.restaurantvoting.web.AbstractControllerTest;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -19,14 +18,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.favdemo.restaurantvoting.util.DishUtil.getTos;
-import static ru.favdemo.restaurantvoting.web.dish.AdminDishRestController.REST_URL;
-import static ru.favdemo.restaurantvoting.web.dish.DishTestData.*;
-import static ru.favdemo.restaurantvoting.web.restaurant.RestaurantTestData.RESTAURANT_ID;
+import static ru.favdemo.restaurantvoting.web.DishTestData.*;
+import static ru.favdemo.restaurantvoting.web.RestaurantTestData.RESTAURANT_ID;
 import static ru.favdemo.restaurantvoting.web.user.UserTestData.ADMIN_MAIL;
 
 class AdminDishRestControllerTest extends AbstractControllerTest {
 
-    private static final String REST_URL_REPLACE = REST_URL.replace("{restaurantId}", String.valueOf(RESTAURANT_ID));
+    private static final String REST_URL_REPLACE = AdminDishRestController.REST_URL.replace("{restaurantId}", String.valueOf(RESTAURANT_ID));
     private static final String REST_URL_SLASH = REST_URL_REPLACE + '/';
 
     @Autowired

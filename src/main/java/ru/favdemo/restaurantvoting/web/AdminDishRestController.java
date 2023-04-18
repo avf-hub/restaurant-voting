@@ -1,4 +1,4 @@
-package ru.favdemo.restaurantvoting.web.dish;
+package ru.favdemo.restaurantvoting.web;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -25,7 +25,7 @@ import static ru.favdemo.restaurantvoting.util.validation.ValidationUtil.checkNe
 @RequestMapping(value = AdminDishRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @AllArgsConstructor
-@Tag(name = "Dish Controller")
+@Tag(name = "AdminDishController")
 public class AdminDishRestController {
 
     static final String REST_URL = "/api/admin/restaurants/{restaurantId}/dishes";

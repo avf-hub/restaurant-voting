@@ -14,12 +14,12 @@ public interface VoteRepository extends BaseRepository<Vote> {
     @Query("SELECT v FROM Vote v WHERE v.id=:id AND v.user.id=:userId")
     Optional<Vote> get(int id, int userId);
 
-    @EntityGraph(attributePaths = {"restaurant", "restaurant.dishes"}, type = EntityGraph.EntityGraphType.FETCH)
+    @EntityGraph(attributePaths = {"restaurant"}, type = EntityGraph.EntityGraphType.FETCH)
     @Query("SELECT v FROM Vote v WHERE v.voteDate=current_date() AND v.user.id=:userId")
     Optional<Vote> getToDay(int userId);
 
-    default Vote getExistedOrBelonged(int id, int userId) {
-        return get(id, userId).orElseThrow(
+    default void getExistedOrBelonged(int id, int userId) {
+        get(id, userId).orElseThrow(
                 () -> new DataConflictException("Vote id=" + id + " is not exist or doesn't belong to User id=" + userId)
         );
     }

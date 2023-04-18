@@ -1,4 +1,4 @@
-package ru.favdemo.restaurantvoting.web.vote;
+package ru.favdemo.restaurantvoting.web;
 
 import ru.favdemo.restaurantvoting.model.Vote;
 import ru.favdemo.restaurantvoting.web.MatcherFactory;
@@ -6,7 +6,7 @@ import ru.favdemo.restaurantvoting.web.MatcherFactory;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-import static ru.favdemo.restaurantvoting.web.restaurant.RestaurantTestData.RESTAURANT_1;
+import static ru.favdemo.restaurantvoting.web.RestaurantTestData.RESTAURANT_1;
 
 public class VoteTestData {
     public static final MatcherFactory.Matcher<Vote> VOTE_MATCHER = MatcherFactory.usingEqualsComparator(Vote.class);
